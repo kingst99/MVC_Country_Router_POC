@@ -6,23 +6,27 @@ using System.Web.Mvc;
 
 namespace MVCRouterForCountry.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         public ActionResult Index()
         {
+            ViewBag.Message = "Your country code is : " + CountryCode;
+
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            
+            ViewBag.Message = "Your country code is : " + CountryCode;
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            
+            ViewBag.Message = "Your country code is : " + CountryCode;
 
             return View();
         }
