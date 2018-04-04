@@ -20,41 +20,48 @@ namespace MVCRouterForCountry
 
         protected void Application_BeginRequest(Object sender, EventArgs e)
         {
-            string CountryCodeInUrl = "", redirectUrl = "";
+            string CountryCodeInUrl = "";
+            string[] CountryList = { "GLOBAL", "US", "TW" };
+
             var countryCode = CookieSettings.ReadCookie();
-            if (countryCode == "")
-            {
-                countryCode = "global";
-            }
 
-            if (HttpContext.Current.Request.RawUrl.Length >= 2)
+            if (HttpContext.Current.Request.RawUrl.Length >= 7)
             {
-                CountryCodeInUrl = HttpContext.Current.Request.RawUrl.Substring(1, 2);
-            }
+                CountryCodeInUrl = HttpContext.Current.Request.RawUrl.Substring(1, 6);
 
-            if (countryCode != CountryCodeInUrl)
+                if (!CountryList.Contains(CountryCodeInUrl.ToUpper()))
+                {
+                    if (HttpContext.Current.Request.RawUrl.Length >= 2)
+                    {
+                        CountryCodeInUrl = HttpContext.Current.Request.RawUrl.Substring(1, 2);
+                    }
+                }
+            }
+            else
             {
                 if (HttpContext.Current.Request.RawUrl.Length >= 2)
                 {
-                    if (HttpContext.Current.Request.RawUrl.Substring(1, 2) != "")
-                    {
-                        countryCode = HttpContext.Current.Request.RawUrl.Substring(1, 2);
-                    }
+                    CountryCodeInUrl = HttpContext.Current.Request.RawUrl.Substring(1, 2);
                 }
-
-                if (!System.Web.HttpContext.Current.Request.RawUrl.Contains(countryCode))
-                {
-                    redirectUrl = string.Format("/{0}{1}", countryCode, System.Web.HttpContext.Current.Request.RawUrl);
-
-                    System.Web.HttpContext.Current.Response.RedirectPermanent(redirectUrl);
-                }
-                else
-                {
-                    redirectUrl = System.Web.HttpContext.Current.Request.RawUrl;
-                }
-                CookieSettings.SaveCookie(countryCode);
             }
 
+                if (CountryList.Contains(CountryCodeInUrl.ToUpper()))
+            {
+                if (countryCode != CountryCodeInUrl)
+                {
+                    countryCode = CountryCodeInUrl;
+
+                    //if (!System.Web.HttpContext.Current.Request.RawUrl.StartsWith("/" + countryCode))
+                    //{
+                    //    redirectUrl = string.Format("/{0}{1}", countryCode, System.Web.HttpContext.Current.Request.RawUrl);
+
+                    //    System.Web.HttpContext.Current.Response.RedirectPermanent(redirectUrl);
+                    //}
+
+                    CookieSettings.SaveCookie(countryCode);
+                }
+
+            }
         }
 
         public class CookieSettings
