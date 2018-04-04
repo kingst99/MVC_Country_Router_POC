@@ -51,13 +51,6 @@ namespace MVCRouterForCountry
                 {
                     countryCode = CountryCodeInUrl;
 
-                    //if (!System.Web.HttpContext.Current.Request.RawUrl.StartsWith("/" + countryCode))
-                    //{
-                    //    redirectUrl = string.Format("/{0}{1}", countryCode, System.Web.HttpContext.Current.Request.RawUrl);
-
-                    //    System.Web.HttpContext.Current.Response.RedirectPermanent(redirectUrl);
-                    //}
-
                     CookieSettings.SaveCookie(countryCode);
                 }
 
