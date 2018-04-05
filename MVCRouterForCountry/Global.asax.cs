@@ -40,20 +40,5 @@ namespace MVCRouterForCountry
             }
         }
 
-
-        protected void Session_Start()
-        {
-            var CountryCookie = Utility.CookieSettings.ReadCountryCookie();
-
-            string[] CountryList = Utility.GetAllowCountries();
-            string RawUrl = HttpContext.Current.Request.RawUrl;
-
-            var UserCountryCode = Utility.GetCountryCodeInUrl(CountryList, RawUrl);
-
-            if (CountryList.Contains(UserCountryCode.ToUpper()))
-            {
-                HttpContext.Current.Session["CountryCode"] = UserCountryCode;
-            }
-        }
     }
 }

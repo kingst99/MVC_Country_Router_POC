@@ -26,7 +26,7 @@ namespace MVCRouterForCountry.Controllers
                 {
                     redirectUrl = string.Format("/{0}", Cookie_CountryCode);
                 }
-                filterContext.HttpContext.Response.RedirectPermanent(redirectUrl);
+                filterContext.HttpContext.Response.Redirect(redirectUrl, true);
             }
             else
             {
@@ -35,15 +35,12 @@ namespace MVCRouterForCountry.Controllers
                     if (!filterContext.HttpContext.Session["CountryCode"].Equals(UserCountryCode))
                     {
                         filterContext.HttpContext.Session.Abandon();
-
-                        filterContext.HttpContext.Response.RedirectPermanent(RawUrl);
+                        filterContext.HttpContext.Response.Redirect(RawUrl, true);
                     }
                 }
                 else
                 {
-                    filterContext.HttpContext.Session.Abandon();
-
-                    filterContext.HttpContext.Response.RedirectPermanent(RawUrl);
+                    filterContext.HttpContext.Session["CountryCode"] = UserCountryCode;
                 }
             }
         }
