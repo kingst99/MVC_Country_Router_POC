@@ -10,6 +10,7 @@ namespace MVCRouterForCountry.Controllers
     {
         public ActionResult Index()
         {
+            //驗證目前語系測定結果
             ViewBag.Message = "Your country code is : " + UserCountryCode + ", Session = " + HttpContext.Session["CountryCode"] ?? "";
 
             return View();
@@ -17,7 +18,7 @@ namespace MVCRouterForCountry.Controllers
 
         public ActionResult About()
         {
-
+            //驗證目前語系測定結果
             ViewBag.Message = "Your country code is : " + UserCountryCode + ", Session = " + HttpContext.Session["CountryCode"] ?? "";
 
             return View();
@@ -25,7 +26,7 @@ namespace MVCRouterForCountry.Controllers
 
         public ActionResult Contact()
         {
-
+            //驗證目前語系測定結果
             ViewBag.Message = "Your country code is : " + UserCountryCode + ", Session = " + HttpContext.Session["CountryCode"] ?? "";
 
             return View();
