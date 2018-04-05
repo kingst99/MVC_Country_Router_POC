@@ -10,23 +10,23 @@ namespace MVCRouterForCountry.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Your country code is : " + UserCountryCode;
+            ViewBag.Message = "Your country code is : " + UserCountryCode + ", Session = " + HttpContext.Session["CountryCode"] ?? "";
 
             return View();
         }
 
         public ActionResult About()
         {
-            
-            ViewBag.Message = "Your country code is : " + UserCountryCode;
+
+            ViewBag.Message = "Your country code is : " + UserCountryCode + ", Session = " + HttpContext.Session["CountryCode"] ?? "";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            
-            ViewBag.Message = "Your country code is : " + UserCountryCode;
+
+            ViewBag.Message = "Your country code is : " + UserCountryCode + ", Session = " + HttpContext.Session["CountryCode"] ?? "";
 
             return View();
         }

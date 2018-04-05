@@ -20,12 +20,26 @@ namespace MVCRouterForCountry.Controllers
 
             if (!CountryList.Contains(UserCountryCode.ToUpper()))
             {
+                var Cookie_CountryCode = Utility.CookieSettings.ReadCountryCookie();
                 var redirectUrl = "/global";
+                if (Cookie_CountryCode != "")
+                {
+                    redirectUrl = string.Format("/{0}", Cookie_CountryCode);
+                }
                 filterContext.HttpContext.Response.RedirectPermanent(redirectUrl);
             }
             else
             {
-                if (!filterContext.HttpContext.Session["CountryCode"].Equals(UserCountryCode))
+                if (filterContext.HttpContext.Session["CountryCode"] != null)
+                {
+                    if (!filterContext.HttpContext.Session["CountryCode"].Equals(UserCountryCode))
+                    {
+                        filterContext.HttpContext.Session.Abandon();
+
+                        filterContext.HttpContext.Response.RedirectPermanent(RawUrl);
+                    }
+                }
+                else
                 {
                     filterContext.HttpContext.Session.Abandon();
 
