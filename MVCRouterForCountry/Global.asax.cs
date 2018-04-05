@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVCRouterForCountry.Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,61 +21,39 @@ namespace MVCRouterForCountry
 
         protected void Application_BeginRequest(Object sender, EventArgs e)
         {
-            string CountryCodeInUrl = "";
-            string[] CountryList = { "GLOBAL", "US", "TW" };
+            var Cookie_CountryCode = Utility.CookieSettings.ReadCountryCookie();
 
-            var countryCode = CookieSettings.ReadCookie();
+            string[] CountryList = Utility.GetAllowCountries();
+            string RawUrl = HttpContext.Current.Request.RawUrl;
 
-            if (HttpContext.Current.Request.RawUrl.Length >= 7)
+            string CountryCodeInUrl = Utility.GetCountryCodeInUrl(CountryList, RawUrl);
+
+            if (CountryList.Contains(CountryCodeInUrl.ToUpper()))
             {
-                CountryCodeInUrl = HttpContext.Current.Request.RawUrl.Substring(1, 6);
-
-                if (!CountryList.Contains(CountryCodeInUrl.ToUpper()))
+                if (Cookie_CountryCode != CountryCodeInUrl)
                 {
-                    if (HttpContext.Current.Request.RawUrl.Length >= 2)
-                    {
-                        CountryCodeInUrl = HttpContext.Current.Request.RawUrl.Substring(1, 2);
-                    }
-                }
-            }
-            else
-            {
-                if (HttpContext.Current.Request.RawUrl.Length >= 2)
-                {
-                    CountryCodeInUrl = HttpContext.Current.Request.RawUrl.Substring(1, 2);
-                }
-            }
+                    Cookie_CountryCode = CountryCodeInUrl;
 
-                if (CountryList.Contains(CountryCodeInUrl.ToUpper()))
-            {
-                if (countryCode != CountryCodeInUrl)
-                {
-                    countryCode = CountryCodeInUrl;
-
-                    CookieSettings.SaveCookie(countryCode);
+                    Utility.CookieSettings.SaveCountryCookie(Cookie_CountryCode);
                 }
 
             }
         }
 
-        public class CookieSettings
+
+        protected void Session_Start()
         {
-            public static void SaveCookie(string data)
-            {
-                var mfdCookie = new HttpCookie("CountryCookie");
-                mfdCookie.Value = data;
-                mfdCookie.Expires = DateTime.Now.AddDays(300);
-                HttpContext.Current.Response.Cookies.Add(mfdCookie);
-            }
+            var CountryCookie = Utility.CookieSettings.ReadCountryCookie();
 
-            public static string ReadCookie()
-            {
-                var mfdCookieValue = "";
-                if (HttpContext.Current.Request.Cookies["CountryCookie"] != null)
-                    mfdCookieValue = HttpContext.Current.Request.Cookies["CountryCookie"].Value;
-                return mfdCookieValue;
-            }
+            string[] CountryList = Utility.GetAllowCountries();
+            string RawUrl = HttpContext.Current.Request.RawUrl;
 
+            var UserCountryCode = Utility.GetCountryCodeInUrl(CountryList, RawUrl);
+
+            if (CountryList.Contains(UserCountryCode.ToUpper()))
+            {
+                HttpContext.Current.Session["CountryCode"] = UserCountryCode;
+            }
         }
     }
 }

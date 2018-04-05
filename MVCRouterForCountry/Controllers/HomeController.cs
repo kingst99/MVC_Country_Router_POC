@@ -10,7 +10,7 @@ namespace MVCRouterForCountry.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Your country code is : " + CountryCode;
+            ViewBag.Message = "Your country code is : " + UserCountryCode;
 
             return View();
         }
@@ -18,7 +18,7 @@ namespace MVCRouterForCountry.Controllers
         public ActionResult About()
         {
             
-            ViewBag.Message = "Your country code is : " + CountryCode;
+            ViewBag.Message = "Your country code is : " + UserCountryCode;
 
             return View();
         }
@@ -26,7 +26,7 @@ namespace MVCRouterForCountry.Controllers
         public ActionResult Contact()
         {
             
-            ViewBag.Message = "Your country code is : " + CountryCode;
+            ViewBag.Message = "Your country code is : " + UserCountryCode;
 
             return View();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVCRouterForCountry.Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,34 +9,28 @@ namespace MVCRouterForCountry.Controllers
 {
     public class ControllerBase : Controller
     {
-        public string CountryCode = "";
-        string[] CountryList = { "GLOBAL", "US", "TW" };
+        public string UserCountryCode = "";
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.Request.RawUrl.Length >= 7)
+            string[] CountryList = Utility.GetAllowCountries();
+            string RawUrl = filterContext.HttpContext.Request.RawUrl;
+
+            UserCountryCode = Utility.GetCountryCodeInUrl(CountryList, RawUrl);
+
+            if (!CountryList.Contains(UserCountryCode.ToUpper()))
             {
-                CountryCode = filterContext.HttpContext.Request.RawUrl.Substring(1, 6);
-                
-                if (!CountryList.Contains(CountryCode.ToUpper()))
-                {
-                    if (filterContext.HttpContext.Request.RawUrl.Length >= 2)
-                    {
-                        CountryCode = filterContext.HttpContext.Request.RawUrl.Substring(1, 2);
-                    }
-                }
+                var redirectUrl = "/global";
+                filterContext.HttpContext.Response.RedirectPermanent(redirectUrl);
             }
             else
             {
-                if (filterContext.HttpContext.Request.RawUrl.Length >= 2)
+                if (!filterContext.HttpContext.Session["CountryCode"].Equals(UserCountryCode))
                 {
-                    CountryCode = filterContext.HttpContext.Request.RawUrl.Substring(1, 2);
-                }
-            }
+                    filterContext.HttpContext.Session.Abandon();
 
-            if (!CountryList.Contains(CountryCode.ToUpper()))
-            {
-                throw new HttpException(404, "Resource Not Found.");
+                    filterContext.HttpContext.Response.RedirectPermanent(RawUrl);
+                }
             }
         }
     }
