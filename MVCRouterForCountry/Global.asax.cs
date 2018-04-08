@@ -43,7 +43,24 @@ namespace MVCRouterForCountry
 
                     Utility.CookieSettings.SaveCountryCookie(Cookie_CountryCode);
                 }
+            }
+            else
+            {
+                //網址未偵測到語系代碼(不合法)
+                //訪客查詢網址不合法，將使用Cookie上次紀錄的預設語系並重新導向URL
+                var redirectUrl = "";
+                if (Cookie_CountryCode != "")
+                {
+                    redirectUrl = string.Format("/{0}", Cookie_CountryCode);
+                }
+                else
+                {
+                    //若Cookie沒有記錄，則導向預設語系global
+                    redirectUrl = "/global";
+                }
 
+                //重新導向URL
+                HttpContext.Current.Response.Redirect(redirectUrl, true);
             }
         }
 
