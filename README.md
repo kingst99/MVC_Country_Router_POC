@@ -1,2 +1,2 @@
 # MVC_Country_Router_POC
-To Show How To  Resolve URL Of Request To Know Which Country User Visit Website
+To Show How Resolve Request URL To Display User's Country In Page Informations.
