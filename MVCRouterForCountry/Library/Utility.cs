@@ -16,7 +16,7 @@ namespace MVCRouterForCountry.Library
         /// <returns>語系代碼陣列</returns>
         public static string[] GetAllowCountries()
         {
-            List<string> Countries = new List<string>() { "GLOBAL", "US", "TW" };
+            List<string> Countries = new List<string>() { "GLOBAL", "US", "TW", "CN", "JP" };
             return Countries.ToArray<string>();
         }
 
